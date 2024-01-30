@@ -6,7 +6,6 @@ import com.example.diseasetreatmentsimulator.model.treatmentAction.DrugTreatment
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedList;
-import java.util.List;
 
 @Component
 public class TreatmentActionBuilder {

@@ -23,10 +23,6 @@ public class DrugTreatmentMapper {
         this.mappings.put(DrugType.GENERAL_CASE, new GeneralTreatmentCases());
     }
 
-    public DrugTreatment getDrugTreatment(DrugType drugType) {
-        return this.mappings.get(drugType);
-    }
-
     public LinkedList<DrugTreatment> getDrugTreatments(List<String> drugs) {
         LinkedList<DrugTreatment> result = new LinkedList<>();
         for (String drug: drugs) {

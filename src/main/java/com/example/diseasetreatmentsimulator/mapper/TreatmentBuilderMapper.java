@@ -3,7 +3,6 @@ package com.example.diseasetreatmentsimulator.mapper;
 import com.example.diseasetreatmentsimulator.model.DrugType;
 import com.example.diseasetreatmentsimulator.model.builder.DrugTreatmentBuilder;
 import com.example.diseasetreatmentsimulator.model.treatment.DrugTreatment;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -22,6 +21,7 @@ public class TreatmentBuilderMapper {
                 .collect(Collectors.toMap(DrugTreatmentBuilder::getDrugTreatmentType, Function.identity()));
     }
 
+    @SuppressWarnings("unchecked")
     public DrugTreatmentBuilder<DrugTreatment> fromDrugTreatmentType(DrugType drugType) {
         return (DrugTreatmentBuilder<DrugTreatment>) Optional.ofNullable(map.get(drugType))
                 .orElseThrow(() -> new UnsupportedOperationException("Unsupported drug treatment type"));

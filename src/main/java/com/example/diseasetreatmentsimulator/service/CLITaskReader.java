@@ -14,7 +14,7 @@ import java.util.Scanner;
 
 @Service
 public class CLITaskReader implements CommandLineRunner {
-    private static Logger LOG = LoggerFactory.getLogger(CLITaskReader.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CLITaskReader.class);
 
     @Autowired
     private MedicineTreatmentTaskExecutor treatmentTaskExecutor;
@@ -39,7 +39,7 @@ public class CLITaskReader implements CommandLineRunner {
                 .filter(StringUtils::isNotBlank).toList();
 
         if (2 < args.length || patients.isEmpty()) {
-            LOG.error("Wrong task was requested");
+            LOG.error("Wrong request. Request should contains two parts with separation by space, e.g.: \"T,F,D An,I\"");
             return;
         }
 
@@ -48,7 +48,9 @@ public class CLITaskReader implements CommandLineRunner {
             drugs = List.of(args[1].split(","));
         }
         String resultOfTreatments = treatmentTaskExecutor.runAllRequestedTreatments(patients, drugs);
-        LOG.info(resultOfTreatments);
+        if (StringUtils.isNotBlank(resultOfTreatments)) {
+            LOG.info(resultOfTreatments);
+        }
     }
 
     private static boolean isAllCasesProcessed(Scanner scanner, boolean isFinished) {

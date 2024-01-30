@@ -1,7 +1,6 @@
 package com.example.diseasetreatmentsimulator.model.treatment;
 
 import com.example.diseasetreatmentsimulator.model.DrugType;
-import lombok.Getter;
 
 /**
  * Aspirin cures Fever

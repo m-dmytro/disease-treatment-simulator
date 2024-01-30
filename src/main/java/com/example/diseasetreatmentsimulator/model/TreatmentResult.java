@@ -5,20 +5,20 @@ import java.util.List;
 
 public class TreatmentResult {
 
-    private String patientState;
+    private PatientState patientState;
     private List<DrugType> alreadyUsedDrugs;
 
-    public TreatmentResult(String patientState) {
+    public TreatmentResult(PatientState patientState) {
         this.patientState = patientState;
         this.alreadyUsedDrugs = new ArrayList<>();
     }
 
-    public TreatmentResult(String patientState, List<DrugType> alreadyUsedDrugs) {
+    public TreatmentResult(PatientState patientState, List<DrugType> alreadyUsedDrugs) {
         this.patientState = patientState;
         this.alreadyUsedDrugs = alreadyUsedDrugs;
     }
 
-    public String getPatientState() {
+    public PatientState getPatientState() {
         return patientState;
     }
 

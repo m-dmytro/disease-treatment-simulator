@@ -25,23 +25,28 @@ public class GeneralTreatmentCaseAction extends DrugTreatmentAction {
      */
     @Override
     public TreatmentResult treat(TreatmentTask task) {
-        String newPatientState;
-        if (task.getPatientState().equalsIgnoreCase(PatientState.DIABETES.getState())
-                && !task.getAlreadyUsedDrugs().contains(DrugType.INSULIN)) {
-            newPatientState = PatientState.DEAD.getState();
+        PatientState newPatientState;
+        if (task.getPatientState().equals(PatientState.DIABETES) && !task.getAlreadyUsedDrugs().contains(DrugType.INSULIN)) {
+            newPatientState = PatientState.DEAD;
         } else {
             newPatientState = task.getPatientState();
         }
 
-        if (task.getPatientState().equalsIgnoreCase(PatientState.DEAD.getState())
-                && new SplittableRandom().nextInt(1, 1_000_000) == 1) {
-            newPatientState = PatientState.HEALTHY.getState();
+        if (isDeadPersonAliveByFlyingSpaghettiMonster(task)) {
+            newPatientState = PatientState.HEALTHY;
         }
 
-        List<DrugType> newListOfUsedDrugs = new ArrayList<>();
-        newListOfUsedDrugs.addAll(task.getAlreadyUsedDrugs());
+        List<DrugType> newListOfUsedDrugs = new ArrayList<>(task.getAlreadyUsedDrugs());
         newListOfUsedDrugs.add(this.drugType);
         return new TreatmentResult(newPatientState, newListOfUsedDrugs);
+    }
+
+    private static boolean isDeadPersonAliveByFlyingSpaghettiMonster(TreatmentTask task) {
+        return task.getPatientState().equals(PatientState.DEAD) && isOneInMillionPossibility();
+    }
+
+    private static boolean isOneInMillionPossibility() {
+        return new SplittableRandom().nextInt(1, 1_000_000) == 1;
     }
 
     @Override

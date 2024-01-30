@@ -23,16 +23,14 @@ public class InsulinTreatmentAction extends DrugTreatmentAction {
      */
     @Override
     public TreatmentResult treat(TreatmentTask task) {
-        String newPatientState;
-        if (task.getPatientState().equalsIgnoreCase(PatientState.HEALTHY.getState())
-                && task.getAlreadyUsedDrugs().contains(DrugType.ANTIBIOTIC)) {
-            newPatientState = PatientState.FEVER.getState();
+        PatientState newPatientState;
+        if (task.getPatientState().equals(PatientState.HEALTHY) && task.getAlreadyUsedDrugs().contains(DrugType.ANTIBIOTIC)) {
+            newPatientState = PatientState.FEVER;
         } else {
             newPatientState = task.getPatientState();
         }
 
-        List<DrugType> newListOfUsedDrugs = new ArrayList<>();
-        newListOfUsedDrugs.addAll(task.getAlreadyUsedDrugs());
+        List<DrugType> newListOfUsedDrugs = new ArrayList<>(task.getAlreadyUsedDrugs());
         newListOfUsedDrugs.add(this.drugType);
         return new TreatmentResult(newPatientState, newListOfUsedDrugs);
     }

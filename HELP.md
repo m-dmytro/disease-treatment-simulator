@@ -37,5 +37,8 @@ Drug effects are described by the following rules:
     Output  : F:2,H:0,D:1,T:0,X:0
     Comment : Insulin prevents Diabetic patient from dying, Antibiotics cure Tuberculosis, but in combination with Insulin causes Healthy people to catch Fever.
 
-  
+# Run
+* as SpringBootApplication from your IDE
+* as jar file: java -jar path-to-file/disease-treatment-simulator-0.0.1-SNAPSHOT.jar
+* follow CLI instructions and enter desired task, e.g.: T,F,D An,I
 

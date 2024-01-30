@@ -24,17 +24,16 @@ public class ParacetamolTreatmentAction extends DrugTreatmentAction {
      */
     @Override
     public TreatmentResult treat(TreatmentTask task) {
-        String newPatientState;
-        if (task.getPatientState().equalsIgnoreCase(PatientState.FEVER.getState())) {
-            newPatientState = PatientState.HEALTHY.getState();
+        PatientState newPatientState;
+        if (task.getPatientState().equals(PatientState.FEVER)) {
+            newPatientState = PatientState.HEALTHY;
         } else if (task.getAlreadyUsedDrugs().contains(DrugType.ASPIRIN)) {
-            newPatientState = PatientState.DEAD.getState();
+            newPatientState = PatientState.DEAD;
         } else {
             newPatientState = task.getPatientState();
         }
 
-        List<DrugType> newListOfUsedDrugs = new ArrayList<>();
-        newListOfUsedDrugs.addAll(task.getAlreadyUsedDrugs());
+        List<DrugType> newListOfUsedDrugs = new ArrayList<>(task.getAlreadyUsedDrugs());
         newListOfUsedDrugs.add(this.drugType);
         return new TreatmentResult(newPatientState, newListOfUsedDrugs);
     }
