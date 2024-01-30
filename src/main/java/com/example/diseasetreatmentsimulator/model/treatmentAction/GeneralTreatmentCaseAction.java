@@ -21,6 +21,7 @@ public class GeneralTreatmentCaseAction extends DrugTreatmentAction {
 
     /**
      * Insulin prevents diabetic subjects from dying, does not cure Diabetes
+     *      Diabetes without Insulin treatments cause Death
      * One time in a million the Flying Spaghetti Monster shows his noodly power and resurrects a Dead patient, the patient becomes Healthy
      */
     @Override

@@ -19,6 +19,7 @@ public class InsulinTreatmentAction extends DrugTreatmentAction {
     }
 
     /**
+     * Insulin prevents diabetic subjects from dying, does not cure Diabetes
      * Insulin mixed with Antibiotic causes Healthy people to catch Fever
      */
     @Override
