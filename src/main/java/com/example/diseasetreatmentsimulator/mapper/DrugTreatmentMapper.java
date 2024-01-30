@@ -1,7 +1,7 @@
 package com.example.diseasetreatmentsimulator.mapper;
 
-import com.example.diseasetreatmentsimulator.model.DrugType;
-import com.example.diseasetreatmentsimulator.model.treatment.*;
+import com.example.diseasetreatmentsimulator.treatment.model.DrugType;
+import com.example.diseasetreatmentsimulator.treatment.treatment.*;
 import org.springframework.stereotype.Component;
 
 import java.util.EnumMap;

@@ -1,58 +1,58 @@
 package com.example.diseasetreatmentsimulator.service;
 
 import com.example.diseasetreatmentsimulator.mapper.DrugTreatmentMapper;
-import com.example.diseasetreatmentsimulator.model.PatientState;
-import com.example.diseasetreatmentsimulator.model.RequestedTask;
-import com.example.diseasetreatmentsimulator.model.TreatmentResult;
-import com.example.diseasetreatmentsimulator.model.TreatmentTask;
-import com.example.diseasetreatmentsimulator.model.builder.TreatmentActionBuilder;
-import com.example.diseasetreatmentsimulator.model.treatment.DrugTreatment;
-import com.example.diseasetreatmentsimulator.model.treatmentAction.DrugTreatmentAction;
+import com.example.diseasetreatmentsimulator.mapper.TreatmentActionBuilderMapper;
+import com.example.diseasetreatmentsimulator.treatment.model.PatientState;
+import com.example.diseasetreatmentsimulator.treatment.model.RequestedTask;
+import com.example.diseasetreatmentsimulator.treatment.model.TreatmentResult;
+import com.example.diseasetreatmentsimulator.treatment.model.TreatmentTask;
+import com.example.diseasetreatmentsimulator.treatment.treatment.DrugTreatment;
+import com.example.diseasetreatmentsimulator.treatment.treatmentAction.DrugTreatmentAction;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class MedicineTreatmentTaskExecutor {
-    private static final Logger LOG = LoggerFactory.getLogger(MedicineTreatmentTaskExecutor.class);
+
+    public static final String UNSUPPORTED_PATIENT_TYPE_ERROR = "Wrong request: unsupported patient type. Possible patients: F,H,D,I,X";
+    public static final String UNSUPPORTED_DRUG_TYPE_ERROR = "Wrong request: unsupported drug type. Possible drugs: As,An,I,P";
 
     @Autowired
     private DrugTreatmentMapper drugTreatmentMapper;
     @Autowired
-    private TreatmentActionBuilder treatmentActionBuilder;
+    private TreatmentActionBuilderMapper treatmentActionBuilderMapper;
 
     public String runAllRequestedTreatments(List<String> patients, List<String> drugs) {
-        RequestedTask requestedTask = exctratAndValidateRequestedParameters(patients, drugs);
-        if (requestedTask == null) {
-            return StringUtils.EMPTY;
+        RequestedTask requestedTask = extractAndValidateRequestedParameters(patients, drugs);
+        if (requestedTask.error() != null) {
+            return requestedTask.error();
         }
         Map<PatientState, Integer> resultOfAllTreatmentsMap = executeTreatmentsToEachPatient(requestedTask.patientStates(), requestedTask.drugTreatmentActions());
-        StringBuilder resultOfAllTreatments = aggregateResultMapToSting(resultOfAllTreatmentsMap);
+        StringBuilder resultOfAllTreatments = aggregateResultMapToString(resultOfAllTreatmentsMap);
         return String.valueOf(resultOfAllTreatments);
     }
 
-    private RequestedTask exctratAndValidateRequestedParameters(List<String> patients, List<String> drugs) {
+    private RequestedTask extractAndValidateRequestedParameters(List<String> patients, List<String> drugs) {
         List<PatientState> patientStates;
         LinkedList<DrugTreatmentAction> drugTreatmentActions;
         LinkedList<DrugTreatment> drugTreatments;
         try {
             patientStates = patients.stream().map(PatientState::getPatientState).toList();
         } catch (UnsupportedOperationException uoe) {
-            LOG.error("Wrong request: unsupported patient type. Possible patients: F,H,D,I,X");
-            return null;
+            return new RequestedTask(UNSUPPORTED_PATIENT_TYPE_ERROR);
         }
         try {
             drugTreatments = drugTreatmentMapper.getDrugTreatments(drugs);
-            drugTreatmentActions = treatmentActionBuilder.getGeneralTreatmentActions(drugTreatments);
+            drugTreatmentActions = treatmentActionBuilderMapper.getGeneralTreatmentActions(drugTreatments);
         } catch (UnsupportedOperationException uoe) {
-            LOG.error("Wrong request: unsupported drug type. Possible drugs: As,An,I,P");
-            return null;
+            return new RequestedTask(UNSUPPORTED_DRUG_TYPE_ERROR);
         }
         return new RequestedTask(drugTreatmentActions, patientStates);
     }
@@ -74,7 +74,7 @@ public class MedicineTreatmentTaskExecutor {
         return resultOfAllTreatmentsMap;
     }
 
-    private static StringBuilder aggregateResultMapToSting(Map<PatientState, Integer> resultOfAllTreatmentsMap) {
+    private static StringBuilder aggregateResultMapToString(Map<PatientState, Integer> resultOfAllTreatmentsMap) {
         StringBuilder resultOfAllTreatments = new StringBuilder();
         for (PatientState patientState: PatientState.getOrderedValues()) {
             Integer numberOfPatients = resultOfAllTreatmentsMap.get(patientState);

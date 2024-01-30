@@ -1,8 +1,8 @@
 package com.example.diseasetreatmentsimulator.mapper;
 
-import com.example.diseasetreatmentsimulator.model.DrugType;
-import com.example.diseasetreatmentsimulator.model.builder.DrugTreatmentBuilder;
-import com.example.diseasetreatmentsimulator.model.treatment.DrugTreatment;
+import com.example.diseasetreatmentsimulator.treatment.model.DrugType;
+import com.example.diseasetreatmentsimulator.treatment.builder.DrugTreatmentBuilder;
+import com.example.diseasetreatmentsimulator.treatment.treatment.DrugTreatment;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
