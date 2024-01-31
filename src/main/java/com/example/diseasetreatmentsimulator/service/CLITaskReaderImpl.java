@@ -8,33 +8,21 @@ import org.springframework.boot.CommandLineRunner;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 
-public class CLITaskReader implements CommandLineRunner {
-    private static final Logger LOG = LoggerFactory.getLogger(CLITaskReader.class);
+public class CLITaskReaderImpl implements CommandLineRunner, ITaskReader {
+    private static final Logger LOG = LoggerFactory.getLogger(CLITaskReaderImpl.class);
 
     private final MedicineTreatmentTaskExecutor treatmentTaskExecutor;
 
-    public CLITaskReader(MedicineTreatmentTaskExecutor treatmentTaskExecutor) {
+    public CLITaskReaderImpl(MedicineTreatmentTaskExecutor treatmentTaskExecutor) {
         this.treatmentTaskExecutor = treatmentTaskExecutor;
     }
 
     @Override
     public void run(String... args) {
-        boolean isFinished = false;
-        Scanner scanner = new Scanner(System.in);
-        while (!isFinished) {
-            scanInputLine(scanner);
-            isFinished = isAllCasesProcessed(scanner, isFinished);
+        if (args.length != 0) {
+            processRequestedTreatment(args);
         }
-        scanner.close();
-    }
-
-    private void scanInputLine(Scanner scanner) {
-        LOG.info("Please specify patients and medicine: ");
-        String inputArgs = scanner.nextLine();
-        String[] args = inputArgs.split(" ");
-        processRequestedTreatment(args);
     }
 
     public void processRequestedTreatment(String[] inputArgs) {
@@ -51,16 +39,7 @@ public class CLITaskReader implements CommandLineRunner {
             drugs = List.of(inputArgs[1].split(","));
         }
         String resultOfTreatments = treatmentTaskExecutor.runAllRequestedTreatments(patients, drugs);
-        LOG.info(resultOfTreatments);
-    }
-
-    private static boolean isAllCasesProcessed(Scanner scanner, boolean isFinished) {
-        LOG.info("Is all cases processed? Y / N");
-        String yesOrNo = scanner.nextLine();
-        if (yesOrNo.toLowerCase().equals("y")) {
-            isFinished = true;
-        }
-        return isFinished;
+        LOG.info("Treatment result: " + resultOfTreatments);
     }
 
 }

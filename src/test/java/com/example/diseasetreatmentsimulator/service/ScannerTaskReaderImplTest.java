@@ -11,16 +11,16 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class CLITaskReaderTest {
+public class ScannerTaskReaderImplTest {
 
     @Mock
     private MedicineTreatmentTaskExecutor treatmentTaskExecutor;
 
-    CLITaskReader sut;
+    ScannerTaskReaderImpl sut;
 
     @BeforeEach
     void warmUp() {
-        sut = new CLITaskReader(treatmentTaskExecutor);
+        sut = new ScannerTaskReaderImpl(treatmentTaskExecutor);
     }
 
     @Test
