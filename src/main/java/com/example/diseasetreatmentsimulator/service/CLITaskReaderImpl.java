@@ -40,6 +40,7 @@ public class CLITaskReaderImpl implements CommandLineRunner, ITaskReader {
         }
         String resultOfTreatments = treatmentTaskExecutor.runAllRequestedTreatments(patients, drugs);
         LOG.info("Treatment result: " + resultOfTreatments);
+        System.out.println(resultOfTreatments);
     }
 
 }
